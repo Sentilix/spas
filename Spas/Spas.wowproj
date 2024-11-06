@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Deploy" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Default</Configuration>
+    <Name>Spas</Name>
+    <ProjectGuid>{b83e8f81-c1c8-4cfe-877d-783e6b47976a}</ProjectGuid>
+    <AssemblyName>spas</AssemblyName>
+    <RootNamespace>spas</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Default' ">
+    <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="DigamAddonLib.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="readme.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="spasoptions.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="spasslashcommands.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="spasconfig.lua">
+      <SubType>Code</SubType>
+      <DependentUpon>spasconfig.xml</DependentUpon>
+    </Content>
+    <Content Include="spasconfig.xml">
+      <SubType>Frame</SubType>
+    </Content>
+    <Content Include="spas.toc">
+      <SubType>TableOfContents</SubType>
+    </Content>
+    <Content Include="spasconstants.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="spasmain.xml">
+      <SubType>Frame</SubType>
+    </Content>
+    <Content Include="spasmain.lua">
+      <SubType>Code</SubType>
+      <DependentUpon>spasmain.xml</DependentUpon>
+    </Content>
+    <Content Include="spastimers.lua">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="spasutils.lua">
+      <SubType>Code</SubType>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(DevEnvDir)\Extensions\Tools\MSBuild\AddonStudio\Wow\3.0\WowAddonStudio.targets" />
+  <!--
+  To modify your build process, add your task inside one of the targets below and uncomment it.
+  <Target Name="BeforeClean"></Target>
+  <Target Name="AfterClean"></Target>
+  <Target Name="BeforeRebuild"></Target>
+  <Target Name="AfterRebuild"></Target>
+  <Target Name="BeforeDeploy"></Target>
+  <Target Name="AfterDeploy"></Target>
+  -->
+</Project>

@@ -1,0 +1,291 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Script file="spasconfig.lua" />
+
+	<!-- Frame template for one config button (i.e. not firing a spell when clicked so no secure button) -->
+	<Button name="SpasConfigButtonTemplate" inherits="ActionButtonTemplate" frameStrata="MEDIUM" hidden="false" virtual="true">
+		<Size>
+			<AbsDimension x="40" y="40" />
+		</Size>
+		<NormalTexture file="Interface\PaperDoll\UI-Backpack-EmptySlot" />
+		<Scripts>
+			<OnLoad>
+				self:EnableMouse(true);
+				self:EnableKeyboard(false);
+				self:RegisterForClicks("LeftButtonDown", "RightButtonDown");
+			</OnLoad>
+		</Scripts>
+	</Button>
+
+	<!-- SpellTrigger including spell Icon, rule Dropdown and parameter TextEdit -->
+	<Frame name="SpasRuleConfigTemplate" inherits="BackdropTemplate" frameStrata="MEDIUM" hidden="false" virtual="true">
+		<Size x="450" y="56" />
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+
+		<Frames>
+			<!-- Dummy input field to claim frame focus -->
+			<EditBox name="$parentDummy" letters="1" hidden="false">
+				<Size>
+					<AbsDimension x="0" y="0"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="-200" y="-200"/>
+					</Anchor>
+				</Anchors>
+				<FontString inherits="GameFontNormal"/>
+			</EditBox>
+
+			<!-- Spell button -->
+			<Button name="$parentSpell" inherits="SpasConfigButtonTemplate">
+				<Size>
+					<AbsDimension x="50" y="50"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+
+			<!-- Rule Dropdown box -->
+			<DropdownButton name="$parentTrigger" inherits="WowStyle1DropdownTemplate">
+				<Size>
+					<AbsDimension x="360" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="160" y="-2"/>
+					</Anchor>
+				</Anchors>
+			</DropdownButton>
+			
+			<!-- Rule Parameter EditBox -->
+			<EditBox name="$parentParams" letters="120">
+				<Size>
+					<AbsDimension x="350" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="170" y="-26"/>
+					</Anchor>
+				</Anchors>
+				<FontString inherits="GameFontNormal">
+					<Color r="0.9" g="0.9" b="0.9" />
+				</FontString>
+			</EditBox>
+		</Frames>
+		<Layers>
+			<Layer level="ARTWORK">
+				<!-- Active when ... -->
+				<FontString name="$parentRuleCaption" inherits="GameFontNormal" text="Active when:">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentTrigger">
+							<Offset>
+								<AbsDimension x="-100" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<!-- Parameters -->
+				<FontString name="$parentParamsCaption" inherits="GameFontNormal" text="Parameters:">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentTrigger">
+							<Offset>
+								<AbsDimension x="-100" y="-24"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				
+				<!-- Rule Parameter EditBox Textures -->
+				<Texture name="$parentParamsTexLeft" file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+					<Size>
+						<AbsDimension x="32" y="32"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentParams" relativePoint="LEFT">							
+							<Offset>
+								<AbsDimension x="-14" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0" right="0.125" top="0" bottom="1.0"/>
+				</Texture>
+				<Texture name="$parentParamsTexRight" file="Interface\ChatFrame\UI-ChatInputBorder-Right">
+					<Size>
+						<AbsDimension x="32" y="32"/>
+					</Size>
+					<Anchors>
+						<Anchor point="RIGHT" relativeTo="$parentParams" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="4" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.875" right="1" top="0" bottom="1.0" />
+				</Texture>
+				<Texture name="$parentParamsTexCenter" file="Interface\ChatFrame\UI-ChatInputBorder-Right">
+					<Size>
+						<AbsDimension x="1" y="32"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentParamsTexLeft" relativePoint="RIGHT"/>
+						<Anchor point="RIGHT" relativeTo="$parentParamsTexRight" relativePoint="LEFT"/>
+					</Anchors>
+					<TexCoords left="0" right="0.9375" top="0" bottom="1.0" />
+				</Texture>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<!-- Configration frame: main entry -->
+	<Frame name="SpasConfigFrame" parent="UIParent" toplevel="true" inherits="BackdropTemplate" hidden="true" frameStrata="MEDIUM">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="BACKDROP_DIALOG_32_32" type="global"/>
+			<KeyValue key="backdropColor" value="BLACK" type="global"/>
+			<KeyValue key="backdropBorderColor" value="WHITE" type="global"/>
+		</KeyValues>
+		<Size x="600" y="500" />
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer>
+				<Texture name="$parentHeaderTexture" file="Interface\DialogFrame\UI-DialogBox-Header">
+					<Size>
+						<AbsDimension x="700" y="64"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="12"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<FontString name="$parentCaption" inherits="GameFontNormal" text="Spell Assignments Configuration">
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parentHeaderTexture">
+							<Offset>
+								<AbsDimension x="0" y="-14"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Frames>
+			<!-- Raid buff rows are inserted here --><!--
+			<Frame name="$parentPersonal" hidden="false">
+				<Size x="900" y="450" />
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="-80" relativeTo="BuffaloConfigFrame" />
+				</Anchors>
+			</Frame>
+
+			<Frame name="$parentRaid" hidden="false">
+				<Size x="900" y="450" />
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="-80" relativeTo="BuffaloConfigFrame" />
+				</Anchors>
+			</Frame>
+
+			--><!-- Self buff row is inserted here. All controls below are positioned relative tho this. --><!--
+			<Frame name="$parentSelf" hidden="false">
+				<Size x="900" y="42" />
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" x="0" y="60" relativeTo="BuffaloConfigFrame" />
+				</Anchors>
+			</Frame>
+
+			--><!-- Class config button --><!--
+			<Button name="$parentClassConfigButton" inherits="UIPanelButtonTemplate" movable="true" text="Class options">
+				<Size>
+					<AbsDimension x="120" y="23" />
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="BuffaloConfigFrame">
+						<Offset x="-130" y="24" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>Buffalo:openClassConfigDialogue();</OnClick>
+				</Scripts>
+			</Button>
+			--><!-- General config button --><!--
+			<Button name="$parentGeneralConfigButton" inherits="UIPanelButtonTemplate" movable="true" text="General options">
+				<Size>
+					<AbsDimension x="120" y="23" />
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="BuffaloConfigFrame">
+						<Offset x="0" y="24" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>Buffalo:openGeneralConfigDialogue();</OnClick>
+				</Scripts>
+			</Button>-->
+			
+			<!-- Close button -->
+			<Button name="$parentCloseButton" inherits="UIPanelButtonTemplate" movable="true" text="Close">
+				<Size>
+					<AbsDimension x="120" y="23" />
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="SpasConfigFrame">
+						<Offset x="0" y="32" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>Spas:OnConfigCloseButtonClick();</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="SpasVersionString" inherits="GameFontNormal" text="Spell Assignments / SPAS x - by y">
+					<Anchors>
+						<Anchor point="BOTTOM">
+							<Offset>
+								<AbsDimension x="0" y="8"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<Color r="0.4" g="0.3" b="0.1" a="1.0"/>
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Scripts>
+			<OnLoad inherit="prepend">
+				self:SetMovable(true)
+				self:SetUserPlaced(true)
+				self:RegisterForDrag("LeftButton")
+				tinsert(UISpecialFrames, self:GetName());
+			</OnLoad>
+			<OnShow>
+				PlaySound(Buffalo.sounds.IG_MAINMENU_OPEN);
+			</OnShow>
+			<OnHide>
+				PlaySound(Buffalo.sounds.IG_MAINMENU_CLOSE);
+			</OnHide>
+			<OnDragStart>
+				if not BUFFALO_SubConfigOpen then
+				self:StartMoving()
+				end;
+			</OnDragStart>
+			<OnDragStop>
+				if not BUFFALO_SubConfigOpen then
+				self:StopMovingOrSizing()
+				end;
+			</OnDragStop>
+		</Scripts>
+	</Frame>
+</Ui>

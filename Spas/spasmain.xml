@@ -1,0 +1,80 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Script file="spasmain.lua" />
+
+	<!-- Frame template for one spell button -->
+	<Button name="SpasButtonTemplate" inherits="SecureActionButtonTemplate" frameStrata="MEDIUM" hidden="false" virtual="true">
+		<Size>
+			<AbsDimension x="32" y="32" />
+		</Size>
+		<NormalTexture file="Interface\PaperDoll\UI-Backpack-EmptySlot" />
+		<Scripts>
+			<OnLoad>
+				self:EnableMouse(true);
+				self:EnableKeyboard(false);
+				self:RegisterForClicks("LeftButtonUp");
+				self:SetAttribute("item", nil);
+				self:SetAttribute("target-slot", nil);
+			</OnLoad>
+		</Scripts>
+	</Button>
+	
+	<Frame name="SpasButtonFrame" parent="UIParent" inherits="BackdropTemplate" toplevel="true" movable="true" frameStrata="MEDIUM" hidden="false">
+		<Size x="144" y="40" />
+		<Anchors>
+			<Anchor point="CENTER" />
+		</Anchors>
+
+		<!-- Configuration button -->
+		<Frames>
+			<Button name="SpasConfigButton" inherits="ActionButtonTemplate" frameStrata="HIGH" hidden="false">
+				<Size>
+					<AbsDimension x="16" y="16" />
+				</Size>
+				<Anchors>
+					<Anchor point="RIGHT" />
+				</Anchors>
+				<NormalTexture file="Interface\Icons\trade_engineering" />
+				<PushedTexture file="Interface\Icons\trade_engineering" />
+				<Scripts>
+					<OnClick>
+						Spas:OnConfigOpenButtonClick(self);
+					</OnClick>
+					<OnLoad inherit="prepend">
+						self:RegisterForClicks("LeftButtonUp");
+					</OnLoad>
+				</Scripts>
+			</Button>
+		</Frames>
+
+		<!-- Moving frame does NOT work. The special frame works, but then buttons are not shown :-( -->
+		<Scripts>
+			<OnLoad inherit="prepend">
+				self:SetUserPlaced(true);
+				self:RegisterForDrag("LeftButton", "RightButton");
+			</OnLoad>
+			<OnDragStart>
+				self:StartMoving()
+			</OnDragStart>
+			<OnDragStop>
+				self:StopMovingOrSizing()
+				Spas_RepositionateButtonFrame(self);
+			</OnDragStop>
+		</Scripts>
+	</Frame>
+	
+	<!-- Dummy event frame -->
+	<Frame name="SpasEventFrame">
+		<Scripts>
+			<OnLoad>
+				Spas_OnLoad();
+			</OnLoad>
+			<OnEvent>
+				Spas:OnEvent(self, event, ...);
+			</OnEvent>
+			<OnUpdate>
+				Spas:OnTimer(elapsed);
+			</OnUpdate>
+		</Scripts>
+	</Frame>
+
+</Ui>
