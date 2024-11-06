@@ -1,0 +1,2 @@
+# spas
+Spell Assignments (Spas)
