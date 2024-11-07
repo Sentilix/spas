@@ -1,12 +1,12 @@
 ## Title: Spell Assignments - spas
 ## Notes: Assign commonly-used spells to specific players
-## Version: 0.1.8
+## Version: 0.1.9
 ## Author: Mimma @ <EU-Pyrewood Village>
 ## Interface: 11504
 ## SavedVariables: SPAS_PERSISTED_OPTIONS
 ## X-Expansion-Level: 1
-## X-Curse-Project-ID: -1
-## X-WoWI-ID: -1
+## X-Curse-Project-ID: 1135392
+## X-WoWI-ID: 26870
 
 DigamAddonLib.lua
 spasconfig.xml
