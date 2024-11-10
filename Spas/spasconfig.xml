@@ -52,7 +52,7 @@
 			</Button>
 
 			<!-- Rule Dropdown box -->
-			<DropdownButton name="$parentTrigger" inherits="WowStyle1DropdownTemplate">
+			<DropdownButton name="$parentTrigger" inherits="WowStyle2DropdownTemplate">
 				<Size>
 					<AbsDimension x="360" y="20"/>
 				</Size>
@@ -102,8 +102,9 @@
 				</FontString>
 				
 				<!-- Rule Parameter EditBox Textures -->
-				<Texture name="$parentParamsTexLeft" file="Interface\ChatFrame\UI-ChatInputBorder-Left">
-					<Size>
+				<!--<Texture name="$parentParamsTexLeft" file="Interface\ChatFrame\UI-ChatInputBorder-Left2">-->
+				<Texture name="$parentParamsTexLeft" file="Interface\ChatFrame\UI-ChatInputBorderFocus-Left">
+						<Size>
 						<AbsDimension x="32" y="32"/>
 					</Size>
 					<Anchors>
@@ -113,9 +114,10 @@
 							</Offset>
 						</Anchor>
 					</Anchors>
-					<TexCoords left="0" right="0.125" top="0" bottom="1.0"/>
+					<!--<TexCoords left="0" right="0.125" top="0" bottom="1.0"/>-->
 				</Texture>
-				<Texture name="$parentParamsTexRight" file="Interface\ChatFrame\UI-ChatInputBorder-Right">
+				<!--<Texture name="$parentParamsTexRight" file="Interface\ChatFrame\UI-ChatInputBorder-Right2">-->
+				<Texture name="$parentParamsTexRight" file="Interface\ChatFrame\UI-ChatInputBorderFocus-Right">
 					<Size>
 						<AbsDimension x="32" y="32"/>
 					</Size>
@@ -126,10 +128,11 @@
 							</Offset>
 						</Anchor>
 					</Anchors>
-					<TexCoords left="0.875" right="1" top="0" bottom="1.0" />
+					<!--<TexCoords left="0.875" right="1" top="0" bottom="1.0" />-->
 				</Texture>
-				<Texture name="$parentParamsTexCenter" file="Interface\ChatFrame\UI-ChatInputBorder-Right">
-					<Size>
+				<!--<Texture name="$parentParamsTexCenter" file="Interface\ChatFrame\UI-ChatInputBorder-Right">-->
+				<Texture name="$parentParamsTexCenter" file="Interface\ChatFrame\UI-ChatInputBorderFocus-Mid">
+						<Size>
 						<AbsDimension x="1" y="32"/>
 					</Size>
 					<Anchors>

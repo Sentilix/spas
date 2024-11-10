@@ -24,15 +24,15 @@ Spas.lib = DigamAddonLib:new(addonMetadata);
 	Want to control what comes in and what does not.
 --]]
 function Spas:LoadSettings()
-	Spas.options.TargetNameLength			= self:GetConfigValue("options.TargetNameLength", 4);
-	Spas.options.AddonVisibility			= self:GetConfigValue("options.AddonVisibility", "ALWAYS");
+	Spas.options.TargetNameLength			= self:GetConfigValue(string.format("%s.options.TargetNameLength", Spas.vars.playerClass), 4);
+	Spas.options.AddonVisibility			= self:GetConfigValue(string.format("%s.options.AddonVisibility", Spas.vars.playerClass), "ALWAYS");
 	Spas.options.ButtonFrame = {}
-	Spas.options.ButtonFrame.X				= self:GetConfigValue("options.ButtonFrame.X", 0);
-	Spas.options.ButtonFrame.Y				= self:GetConfigValue("options.ButtonFrame.Y", 0);
+	Spas.options.ButtonFrame.X				= self:GetConfigValue(string.format("%s.options.ButtonFrame.X", Spas.vars.playerClass), 0);
+	Spas.options.ButtonFrame.Y				= self:GetConfigValue(string.format("%s.options.ButtonFrame.Y", Spas.vars.playerClass), 0);
 	Spas.options.spellFrame = {}
-	Spas.options.spellFrame.IconSize		= self:GetConfigValue("options.spellFrame.IconSize", 32);
-	Spas.options.spellFrame.Spacing			= self:GetConfigValue("options.spellFrame.Spacing", 2);
-	Spas.options.spellFrame.SpacingFooter	= self:GetConfigValue("options.spellFrame.SpacingFooter", 10);
+	Spas.options.spellFrame.IconSize		= self:GetConfigValue(string.format("%s.options.spellFrame.IconSize", Spas.vars.playerClass), 32);
+	Spas.options.spellFrame.Spacing			= self:GetConfigValue(string.format("%s.options.spellFrame.Spacing", Spas.vars.playerClass), 2);
+	Spas.options.spellFrame.SpacingFooter	= self:GetConfigValue(string.format("%s.options.spellFrame.SpacingFooter", Spas.vars.playerClass), 10);
 
 	--	Load spellTriggers into spellInfo directly:
 	Spas:LoadSpellTriggerSettings();
@@ -42,7 +42,7 @@ end;
 function Spas:LoadSpellTriggerSettings()
 	Spas.options.spells = { };
 
-	local keyname = "options.spells.%s.%s";
+	local keyname = Spas.vars.playerClass..".options.spells.%s.%s";
 	local _, unitClass = UnitClass("player");
 	local spells = Spas.spells[unitClass];
 	if spells then
@@ -115,7 +115,11 @@ end;
 
 function Spas:SaveSettings()
 	self:RefreshSpellTriggerSettings();
-	self:SaveSettingsRecursively(Spas.options, "options", SPAS_PERSISTED_OPTIONS);
+
+	if not SPAS_PERSISTED_OPTIONS[Spas.vars.playerClass] then
+		SPAS_PERSISTED_OPTIONS[Spas.vars.playerClass] = { };
+	end;
+	self:SaveSettingsRecursively(Spas.options, "options", SPAS_PERSISTED_OPTIONS[Spas.vars.playerClass]);
 end;
 
 function Spas:SaveSettingsRecursively(keyvalue, keyname, curtable)

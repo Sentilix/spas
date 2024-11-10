@@ -36,7 +36,8 @@ Spas.vars.spellLabels = {};				--	Label [1..8] so it is easy to do lookups.
 Spas.vars.configRules = {};				--	SpellTrigger [1..8] on config screen.
 
 Spas.vars.selectableTargets = {};
-Spas.vars.playerClass = UnitClass("player");
+local _, playerClass = UnitClass("player");
+Spas.vars.playerClass = playerClass;
 Spas.vars.playerFullName = "";
 
 Spas.config = {};

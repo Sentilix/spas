@@ -1,4 +1,11 @@
 
+SpellAssignments (SPAS) v0.1.9
+* Attempted to make config UI better. Work still in progress :)
+* Fixed setting: settings are now stored per Class.
+
+
+
+
 Missing:
 * Functionality to evaluate activation rules (missing some rules but going ahead)
 	* Polymorphed (replace with SPELLTRIGGER_DEBUFFACTIVE)
