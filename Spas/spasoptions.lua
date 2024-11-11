@@ -48,25 +48,19 @@ function Spas:LoadSpellTriggerSettings()
 	if spells then
 		for spellName, spellInfo in next, spells do
 			if not spellInfo.SpellTrigger then
-				-- "cannot happen": no spelltrigger defined. Use NOCOOLDOWN as fallback:
-				--print(string.format("Trigger for spell=%s not set, using default", spellName));
-				--spellInfo.SpellTrigger = Spas:clone(Spas.config.spellTriggers[SPELLTRIGGER_NOCOOLDOWN]);
 				spellInfo.SpellTrigger = Spas.config.spellTriggers[SPELLTRIGGER_NOCOOLDOWN];
 			end;
 
 			spellInfo.Enabled		= self:GetConfigValue(string.format(keyname, spellName, "Enabled"), spellInfo.Enabled);
+			spellInfo.FullName		= self:GetConfigValue(string.format(keyname, spellName, "FullName"), spellInfo.FullName);
 			local spellTriggerID	= self:GetConfigValue(string.format(keyname, spellName, "SpellTrigger.ID"), spellInfo.SpellTrigger.ID);
 			--	Avoid nil index error:
 			if not spellTriggerID then
 				spellTriggerID = SPELLTRIGGER_NOCOOLDOWN;
 			end;
-			
-			--spellInfo.SpellTrigger	= Spas:clone(Spas.config.spellTriggers[spellTriggerID]);
+
 			spellInfo.SpellTrigger	= Spas.config.spellTriggers[spellTriggerID];
 			if not spellInfo.SpellTrigger then
-				-- This time it CAN happen: typically after an Addon update and the old type does not exist.
-				--	Use COOLDOWN as fallback:
-				--spellInfo.SpellTrigger = Spas:clone(Spas.config.spellTriggers[SPELLTRIGGER_NOCOOLDOWN]);
 				spellInfo.SpellTrigger = Spas.config.spellTriggers[SPELLTRIGGER_NOCOOLDOWN];
 			end;
 
@@ -88,6 +82,7 @@ function Spas:RefreshSpellTriggerSettings()
 		Spas.options.spells[spellInfo.SpellName] =
 			{
 				["Enabled"]			= spellInfo.Enabled or 0,
+				["FullName"]		= spellInfo.FullName or "",
 				["ParamValue"]		= spellInfo.ParamValue,
 				["SpellTrigger"]	= {
 					["ID"]			= spellInfo.SpellTrigger.ID,

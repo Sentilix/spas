@@ -1,4 +1,11 @@
 
+
+SpellAssignments (SPAS) v0.1.10
+* Current assigned target are now saved.
+* Added Blink option on Trigger: usefull when getting a Whisper.
+* Now whispering target back if selected spell (PI!) is on Cooldown.
+
+
 SpellAssignments (SPAS) v0.1.9
 * Attempted to make config UI better. Work still in progress :)
 * Fixed setting: settings are now stored per Class.

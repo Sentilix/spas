@@ -13,9 +13,8 @@ function Spas:Initialize()
 
 	if Spas:LoadSpellTable() then
 		Spas:CreateSpellButtons();
-		Spas:RefreshSpellButtons();
-
 		Spas:LoadSettings();		-- Must be called AFTER LoadSpells also to fill data for spellInfo
+		Spas:RefreshSpellButtons();
 
 		SpasButtonFrame:Show();
 		Spas:UpdateAddonVisibility();

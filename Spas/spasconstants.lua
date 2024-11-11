@@ -151,6 +151,7 @@ Spas.config.spellTriggers = {
 		["ParamSize"] = "medium",
 		["ParamText"] = "Contains:",
 		["DefaultValue"] = "PI",
+		["Blinkable"] = 1,
 		["Validate"] = function(paramValue) return string.lower(paramValue); end,
 	},
 	--	Special rules:
@@ -162,6 +163,7 @@ Spas.config.spellTriggers = {
 		["ParamSize"] = nil,
 		["ParamText"] = nil,
 		["DefaultValue"] = "cause insanity",
+		["Blinkable"] = 1,
 		["Validate"] = function(paramValue) 
 			local paramNames = Spas:splitString(string.lower(paramValue), ",");
 			local spellString = "";

@@ -10,6 +10,7 @@ Spas = select(2, ...)
 
 --	General variables:
 Spas.vars = {};
+Spas.vars.BootTime = GetTime();
 Spas.vars.addonLoaded = false;
 Spas.vars.maxSelectableSpells = 8;		--	This defines how many frames (buttons) we will pre-define.
 Spas.vars.sortedSpells = {};			--	Learned spells (hidden or shown) for this character.
@@ -43,6 +44,9 @@ Spas.vars.playerFullName = "";
 Spas.config = {};
 
 Spas.ui = {};
+Spas.ui.blinkAlphaOn = 1.0;
+Spas.ui.blinkAlphaOff = 0.2;
+Spas.ui.blinkAlpha = Spas.ui.blinkAlphaOn;
 Spas.ui.coolDownAlpha = 0.3;
 Spas.ui.colourSelectedSpell = '4444ff';
 Spas.ui.configFrame = {}
@@ -472,6 +476,7 @@ function Spas:ConfigureTargetSelection(spellInfo)
 
 									spellInfo.FullName = Spas.lib:getPlayerAndRealm(targetInfo.UnitID);
 									spellInfo.UnitID = targetInfo.UnitID;
+									self:SaveSettings();
 								end
 							);
 						end;
@@ -485,6 +490,7 @@ function Spas:ConfigureTargetSelection(spellInfo)
 							Spas:UpdateTargetName(Spas.vars.spellLabels[buttonIndex], nil);
 							spellInfo.FullName = "";
 							spellInfo.UnitID = "player";
+							self:SaveSettings();
 						end
 					);
 					rootDescription:CreateButton(

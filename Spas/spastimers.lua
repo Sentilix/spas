@@ -3,6 +3,11 @@ Spas = select(2, ...)
 
 Spas.vars.timerTick = 0;
 Spas.vars.timerInterval = 0.3;
+Spas.vars.blinkIntervalTarget = 0.4;		--	This is the desired blink interval. The real interval will be calculated below:
+
+local blink = math.floor(0.5 + (Spas.vars.blinkIntervalTarget / Spas.vars.timerInterval), 0);
+Spas.vars.blinkInterval = Spas.vars.timerInterval * blink;		--	This is the calculated Interval:
+
 Spas.timers = {}
 Spas.timers["SpellCooldownCheck"] = {
 	["Timer"] = 0,
@@ -27,14 +32,18 @@ Spas.timers["LowHealthCheck"] = {
 Spas.timers["WhisperCheck"] = {
 	["Timer"] = 0,
 	["Interval"] = Spas.vars.timerInterval,
-	["Task"] = function() Spas:OnWhisperCheck() end,
+	["Task"] = function() Spas:WhisperCheck() end,
 	["TTL"] = 30,
-}
-				
+}				
 Spas.timers["ApplySpellTriggers"] = {
 	["Timer"] = 0,
 	["Interval"] = Spas.vars.timerInterval,
 	["Task"] = function() Spas:OnApplySpellTriggers() end,
+}
+Spas.timers["Blink"] = {
+	["Timer"] = 0,
+	["Interval"] = Spas.vars.blinkInterval,
+	["Task"] = function() Spas:Blink() end,
 }
 
 
@@ -279,7 +288,7 @@ function Spas:OnLowHealthCheck()
 	end;
 end;
 
-function Spas:OnWhisperCheck()
+function Spas:WhisperCheck()
 	for spellIndex, spellInfo in next, Spas.vars.sortedSpells do
 		if spellInfo.Enabled == 1 then
 			local triggered = false;
@@ -293,6 +302,15 @@ function Spas:OnWhisperCheck()
 							local config = string.lower(spellInfo.ParamValue);
 							if string.find(incoming, config) then
 								triggered = true;
+
+								--	Whisper target back if cooldown left is longer than 5 seconds:
+								local startTime, cooldownTime = GetSpellCooldown(spellInfo.SpellName, BOOKTYPE_SPELL);
+								local endTime = startTime - Spas.vars.BootTime + cooldownTime;
+								local timeLeft = endTime - Spas.vars.timerTick;
+								if timeLeft > 5 and spellInfo.FullName ~= "" then
+									Spas.lib:sendWhisper(spellInfo.FullName, string.format("-[SPAS]- Sorry, %s is still on cooldown for another %d seconds.", spellInfo.SpellName, timeLeft));
+								end;
+
 								spellInfo.WhisperTimestamp = Spas.vars.timerTick;
 								spellInfo.WhisperFullName = nil;
 								spellInfo.WhisperMessage = nil;
@@ -348,11 +366,27 @@ function Spas:OnApplySpellTriggers()
 			if bit.band(ruleMask, spellInfo.DisplayMask) > 0 then
 				button:SetAlpha(Spas.ui.coolDownAlpha);
 			else
-				button:SetAlpha(1.0);
+				if spellInfo.SpellTrigger.Blinkable then
+					button:SetAlpha(Spas.ui.blinkAlpha);
+				else
+					button:SetAlpha(1.0);
+				end;
 			end;
 		end;
 	end;
 end;
+
+--[[
+	Toggle Blink colour
+--]]
+function Spas:Blink()
+	if Spas.ui.blinkAlpha == Spas.ui.blinkAlphaOn then
+		Spas.ui.blinkAlpha = Spas.ui.blinkAlphaOff;
+	else
+		Spas.ui.blinkAlpha = Spas.ui.blinkAlphaOn;
+	end;		
+end;
+
 
 --[[
 	Called when we get an incoming whisper:
