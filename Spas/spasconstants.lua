@@ -45,7 +45,7 @@ Spas.config.spellTriggers = {
 	},
 	[SPELLTRIGGER_NOTONTARGET] = {
 		["ID"] = SPELLTRIGGER_NOTONTARGET,
-		["Name"] = "Spell is not active on Target",
+		["Name"] = "Current spell is not active on Target",
 		["SortOrder"] = 2,
 		["Mask"] = Spas.SPELLTRIGGER_MASK_COOLDOWN + Spas.SPELLTRIGGER_MASK_ALREADYEXISTS,
 		["Validate"] = function(paramValue) return paramValue; end,
@@ -57,7 +57,7 @@ Spas.config.spellTriggers = {
 		["Mask"] = Spas.SPELLTRIGGER_MASK_COOLDOWN + Spas.SPELLTRIGGER_MASK_LOWHEALTH,
 		["ParamSize"] = "small",
 		["ParamText"] = "Percent:",
-		["DefaultValue"] = 30,
+		["DefaultValue"] = 50,
 		["Validate"] = function(paramValue)
 			return paramValue, tonumber(paramValue); 
 		end,
@@ -116,7 +116,7 @@ Spas.config.spellTriggers = {
 	},
 	[SPELLTRIGGER_DEBUFF_TYPE] = {
 		["ID"] = SPELLTRIGGER_DEBUFF_TYPE,
-		["Name"] = "Target have a Debuff of one of these types:", 
+		["Name"] = "Target have one of these Debuffs:", 
 		["SortOrder"] = 6,
 		["Mask"] = Spas.SPELLTRIGGER_MASK_COOLDOWN,
 		["MaskDefault"] = Spas.SPELLTRIGGER_MASK_COOLDOWN,
