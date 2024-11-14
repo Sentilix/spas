@@ -33,6 +33,7 @@ function Spas:LoadSettings()
 	Spas.options.spellFrame.IconSize		= self:GetConfigValue(string.format("%s.options.spellFrame.IconSize", Spas.vars.playerClass), 32);
 	Spas.options.spellFrame.Spacing			= self:GetConfigValue(string.format("%s.options.spellFrame.Spacing", Spas.vars.playerClass), 2);
 	Spas.options.spellFrame.SpacingFooter	= self:GetConfigValue(string.format("%s.options.spellFrame.SpacingFooter", Spas.vars.playerClass), 10);
+	Spas.options.spellFrame.IconsPerRow		= self:GetConfigValue(string.format("%s.options.spellFrame.IconsPerRow", Spas.vars.playerClass), Spas.vars.maxSelectableSpells);
 
 	--	Load spellTriggers into spellInfo directly:
 	Spas:LoadSpellTriggerSettings();

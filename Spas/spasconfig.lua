@@ -42,8 +42,11 @@ Spas.vars.playerClass = playerClass;
 Spas.vars.playerFullName = "";
 
 Spas.config = {};
+Spas.config.Mode = 1;		--	1: Spells, 2: UI
 
 Spas.ui = {};
+Spas.ui.ConfigButtonAlphaOff = 0.7;
+Spas.ui.ConfigButtonAlphaOn = 1.0;
 Spas.ui.blinkAlphaOn = 1.0;
 Spas.ui.blinkAlphaOff = 0.2;
 Spas.ui.blinkAlpha = Spas.ui.blinkAlphaOn;
@@ -83,10 +86,30 @@ function Spas:InitalizeConfigurationOptions()
 		posY = posY - iconHeight;
 	end;
 
-	SpasConfigFrame:SetHeight(#Spas.vars.sortedSpells * iconHeight + 100);		--	100: room for buttons etc.
+	SpasConfig:SetHeight(#Spas.vars.sortedSpells * iconHeight + 164);		--	164: room for top+bottom buttons etc.
 end;
 
+
 function Spas:RefreshConfigurationScreen()
+	if Spas.config.Mode == 1 then
+		SpasConfigButtonFrameSpellButton:SetAlpha(Spas.ui.ConfigButtonAlphaOn);
+		SpasConfigButtonFrameUIButton:SetAlpha(Spas.ui.ConfigButtonAlphaOff);
+
+		SpasConfigSpellFrame:Show();
+		SpasConfigUIFrame:Hide();
+		Spas:RefreshSpellConfigurationScreen();
+	else
+		SpasConfigButtonFrameSpellButton:SetAlpha(Spas.ui.ConfigButtonAlphaOff);
+		SpasConfigButtonFrameUIButton:SetAlpha(Spas.ui.ConfigButtonAlphaOn);
+
+		SpasConfigSpellFrame:Hide();
+		SpasConfigUIFrame:Show();
+		Spas:RefreshUIConfigurationScreen();
+	end;
+end;
+
+
+function Spas:RefreshSpellConfigurationScreen()
 	local spellIndex, spellInfo;
 	for spellIndex, spellInfo in next, Spas.vars.sortedSpells do
 		local ruleControl = Spas.vars.configRules[spellInfo.ButtonIndex];
@@ -135,13 +158,14 @@ function Spas:RefreshConfigurationScreen()
 
 			button:Show();
 		end;
-
-		--[[
-			TODO:
-			Check size, paramtext etc.
-		--]]
 	end;
 end;
+
+function Spas:RefreshUIConfigurationScreen()
+	SpasUIConfigIconSizeCaption:SetText(string.format("Size: %d x %s pixels", Spas.options.spellFrame.IconSize, Spas.options.spellFrame.IconSize));
+	SpasUIConfigIconPaddingCaption:SetText(string.format("Padding: %d pixels", Spas.options.spellFrame.Spacing));
+end;
+
 
 --[[
 	Save changes which are not already persisted.
@@ -193,7 +217,7 @@ function Spas:OnSpellTriggerSelect(buttonIndex, spellTriggerID)
 	local spellInfo = Spas:GetSpellByButtonIndex(buttonIndex);
 	if spellInfo then
 		spellInfo.SpellTrigger = Spas.config.spellTriggers[spellTriggerID];
-		Spas:RefreshConfigurationScreen();
+		Spas:RefreshSpellConfigurationScreen();
 	end;
 end;
 
@@ -209,22 +233,81 @@ end;
 
 function Spas:OpenConfiguration()
 	Spas:RefreshConfigurationScreen();
-	SpasConfigFrame:Show();
+	SpasConfig:Show();
 end;
 
 function Spas:CloseConfiguration()
 	Spas:SaveConfigurationChanges();
-	SpasConfigFrame:Hide();
+	SpasConfig:Hide();
 end;
 
 function Spas:SetSpellEnabled(buttonIndex, enabled)
 	local spellInfo = Spas:GetSpellByButtonIndex(buttonIndex);
 	if spellInfo then
 		spellInfo.Enabled = enabled;
-		Spas:RefreshConfigurationScreen();
+		Spas:RefreshSpellConfigurationScreen();
 		Spas:RefreshSpellButtons();
 	end;
 end;
+
+function Spas_OnUIConfigIconSizeChanged(object)
+	Spas:OnUIConfigIconSizeChanged(object);
+end;
+
+function Spas:OnUIConfigIconSizeChanged(object)
+	local value = math.floor(object:GetValue());
+	object:SetValueStep(1);
+	object:SetValue(value);
+
+	if not Spas.options then return; end;
+
+	if value ~= Spas.options.spellFrame.IconSize then
+		Spas.options.spellFrame.IconSize = value;
+		Spas:RefreshSpellButtons();
+	end;
+	
+	SpasUIConfigIconSizeCaption:SetText(string.format("Size: %d x %s pixels", value, value));
+end;
+
+function Spas_OnUIConfigIconPaddingChanged(object)
+	Spas:OnUIConfigIconPaddingChanged(object);
+end;
+
+function Spas:OnUIConfigIconPaddingChanged(object)
+	local value = math.floor(object:GetValue());
+	object:SetValueStep(1);
+	object:SetValue(value);
+
+	if not Spas.options then return; end;
+
+	if value ~= Spas.options.spellFrame.Spacing then
+		Spas.options.spellFrame.Spacing = value;
+		Spas:RefreshSpellButtons();
+	end;
+	
+	SpasUIConfigIconPaddingCaption:SetText(string.format("Padding: %d pixels", value));
+end;
+
+function Spas_OnUIConfigIconsPerRowChanged(object)
+	Spas:OnUIConfigIconsPerRowChanged(object);
+end;
+
+function Spas:OnUIConfigIconsPerRowChanged(object)
+	local value = math.floor(object:GetValue());
+	object:SetValueStep(1);
+	object:SetValue(value);
+
+	if not Spas.options then return; end;
+
+	if value ~= Spas.options.spellFrame.IconsPerRow then
+		Spas.options.spellFrame.IconsPerRow = value;
+		Spas:RefreshSpellButtons();
+	end;
+	
+--	BuffaloSliderPrayerThresholdText:SetText(string.format("%s/5 people", Buffalo.config.value.GroupBuffThreshold));
+end;
+
+
 
 
 --[[
@@ -236,17 +319,23 @@ function Spas:RefreshSpellButtons(debugDisplaySettings)
 	local posX = 0;
 	local posY = 0;
 
+	if not Spas.options then return; end;
+
 	--	spellFrame is nil while initializing
 	if Spas.options.spellFrame then
 		posX = Spas.options.spellFrame.Spacing;
 		posY = -Spas.options.spellFrame.Spacing;
 	end;
 
+	local orgX = posX;
+	local height = Spas.options.spellFrame.IconSize + 10 + 2*Spas.options.spellFrame.Spacing;
 	local width = 16 + 4;
 
 	Spas:InitializePossibleTargets();
 
 	--	Assign and Enable buttons:
+	local columnCount = 0;
+	local columnMax = 0;
 	for spellName, spellInfo in next, Spas.vars.sortedSpells do
 		local button = nil;
 		local buttonLabel = nil;
@@ -268,6 +357,9 @@ function Spas:RefreshSpellButtons(debugDisplaySettings)
 			button:SetAttribute("type", "spell");
 			button:SetAttribute("spell", spellInfo.SpellName);
 			button:SetAttribute("unit", spellInfo.UnitID);
+
+			button:SetWidth(Spas.options.spellFrame.IconSize);
+			button:SetHeight(Spas.options.spellFrame.IconSize);
 			button:Show();
 
 			Spas:ConfigureTargetSelection(spellInfo);
@@ -285,17 +377,27 @@ function Spas:RefreshSpellButtons(debugDisplaySettings)
 				print(string.format("Updating buttons, Spell=%s, UnitID=%s (name=%s, full=%s)", spellInfo.SpellName, spellInfo.UnitID, UnitName(spellInfo.UnitID), spellInfo.FullName));
 			end;
 
-			width = width + Spas.options.spellFrame.IconSize + Spas.options.spellFrame.Spacing;
+			columnCount = columnCount + 1;
+			if columnCount >= Spas.options.spellFrame.IconsPerRow then
+				columnCount = 0;
+				posX = orgX;
+				posY = posY - Spas.options.spellFrame.IconSize + Spas.options.spellFrame.Spacing;
+			else
+				posX = posX + Spas.options.spellFrame.IconSize + Spas.options.spellFrame.Spacing;
+			end;
 
-			--	Later improvement: Select # of buttons per row
-			posX = posX + Spas.options.spellFrame.IconSize + Spas.options.spellFrame.Spacing;
+			if columnCount > columnMax then
+				columnMax = columnCount;
+			end;
+
 		else
 			button:Hide();
 			buttonLabel:Hide();
 		end;
 	end;
 
-	SpasButtonFrame:SetWidth(width);
+	SpasButtonFrame:SetHeight(height + posY);
+	SpasButtonFrame:SetWidth(width + columnMax * (Spas.options.spellFrame.IconSize + Spas.options.spellFrame.Spacing));
 end;
 
 --[[
@@ -333,7 +435,7 @@ function Spas:CreateSpellButtons()
 		Spas.vars.spellLabels[index] = buttonLabel;
 
 		local controlName = string.format("spas_triggercontrol_%d", index);
-		local ruleConfig = CreateFrame("Frame", controlName, SpasConfigFrame, "SpasRuleConfigTemplate");
+		local ruleConfig = CreateFrame("Frame", controlName, SpasConfigSpellFrame, "SpasRuleConfigTemplate");
 		ruleConfig:SetPoint("TOPLEFT");
 		ruleConfig:Hide();
 		Spas.vars.configRules[index] = ruleConfig;

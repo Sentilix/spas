@@ -1,4 +1,7 @@
 
+SpellAssignments (SPAS) v0.2.0
+* Added configuration of the UI.
+
 
 SpellAssignments (SPAS) v0.1.10
 * Current assigned targets are now saved.
@@ -14,19 +17,18 @@ SpellAssignments (SPAS) v0.1.9
 
 
 Missing:
-* Functionality to evaluate activation rules (missing some rules but going ahead)
-	* Polymorphed (replace with SPELLTRIGGER_DEBUFFACTIVE)
 * Remove cogwheel - replace with Rightclicking frame instead.
-* Assigned players are not removed from spellInfo.UnitID; means unitId is still active.
+
+Done:
 * UI: margins etc. in config screen.
 	* UI:
 		* Margin (0-8 pixels)
 		* Size (16x16 ... 48x48?)
-		* # of Rows
+		* # of Rows (removed from UI again; bars look awfull)
 	* Visibility config in UI.
-
-
-Done:
+* Functionality to evaluate activation rules (missing some rules but going ahead)
+	* Polymorphed (replace with SPELLTRIGGER_DEBUFFACTIVE)
+* Assigned players are not removed from spellInfo.UnitID; means unitId is still active.
 * Possible bug: CD or Debuff not working in groups. Havent reproduced yet.
 	* Happened because GetUnitidFromName did not take party into consideration. Using DigamAddonLib now.
 * BUG: all configured debuff types changes - not only the one actually changed.

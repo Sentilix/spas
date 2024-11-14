@@ -16,6 +16,10 @@
 		</Scripts>
 	</Button>
 
+	<Slider name="SpasOptionsSliderTemplate" inherits="OptionsSliderTemplate" enableMouse="true" hidden="false" virtual="true">
+		<Size x="350" y="20" />
+	</Slider>
+
 	<!-- SpellTrigger including spell Icon, rule Dropdown and parameter TextEdit -->
 	<Frame name="SpasRuleConfigTemplate" inherits="BackdropTemplate" frameStrata="MEDIUM" hidden="false" virtual="true">
 		<Size x="450" y="56" />
@@ -146,7 +150,7 @@
 	</Frame>
 
 	<!-- Configration frame: main entry -->
-	<Frame name="SpasConfigFrame" parent="UIParent" toplevel="true" inherits="BackdropTemplate" hidden="true" frameStrata="MEDIUM">
+	<Frame name="SpasConfig" parent="UIParent" toplevel="true" inherits="BackdropTemplate" hidden="true" frameStrata="MEDIUM">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="BACKDROP_DIALOG_32_32" type="global"/>
 			<KeyValue key="backdropColor" value="BLACK" type="global"/>
@@ -183,65 +187,170 @@
 		</Layers>
 
 		<Frames>
-			<!-- Raid buff rows are inserted here --><!--
-			<Frame name="$parentPersonal" hidden="false">
-				<Size x="900" y="450" />
+			<Frame name="SpasConfigButtonFrame" hidden="false">
+				<!-- Top frame with Frame buttons -->
+				<Size x="600" y="80" />
 				<Anchors>
-					<Anchor point="TOPLEFT" x="0" y="-80" relativeTo="BuffaloConfigFrame" />
+					<Anchor point="TOP" relativeTo="SpasConfig"/>
 				</Anchors>
+				<Frames>
+					<Button name="SpasConfigButtonFrameSpellButton" inherits="UIPanelButtonTemplate" hidden="false">
+						<Size>
+							<AbsDimension x="40" y="40" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOP" relativeTo="SpasConfigButtonFrame">
+								<Offset x="-50" y="-32" />
+							</Anchor>
+						</Anchors>
+						<NormalTexture file="Interface\Icons\inv_misc_book_08" />
+						<PushedTexture file="Interface\Icons\inv_misc_book_08" />
+						<Scripts>
+							<OnClick>Spas:OnSpellConfigClick();</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="SpasConfigButtonFrameUIButton" inherits="UIPanelButtonTemplate" frameStrata="MEDIUM" hidden="false">
+						<Size>
+							<AbsDimension x="40" y="40" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOP" relativeTo="SpasConfigButtonFrame">
+								<Offset x="50" y="-32" />
+							</Anchor>
+						</Anchors>
+						<NormalTexture file="Interface\Icons\inv_gizmo_pipe_03" />
+						<PushedTexture file="Interface\Icons\inv_gizmo_pipe_03" />
+						<Scripts>
+							<OnClick>Spas:OnUIConfigClick();</OnClick>
+						</Scripts>
+					</Button>
+				</Frames>
 			</Frame>
-
-			<Frame name="$parentRaid" hidden="false">
-				<Size x="900" y="450" />
-				<Anchors>
-					<Anchor point="TOPLEFT" x="0" y="-80" relativeTo="BuffaloConfigFrame" />
-				</Anchors>
-			</Frame>
-
-			--><!-- Self buff row is inserted here. All controls below are positioned relative tho this. --><!--
-			<Frame name="$parentSelf" hidden="false">
-				<Size x="900" y="42" />
-				<Anchors>
-					<Anchor point="BOTTOMLEFT" x="0" y="60" relativeTo="BuffaloConfigFrame" />
-				</Anchors>
-			</Frame>
-
-			--><!-- Class config button --><!--
-			<Button name="$parentClassConfigButton" inherits="UIPanelButtonTemplate" movable="true" text="Class options">
-				<Size>
-					<AbsDimension x="120" y="23" />
-				</Size>
-				<Anchors>
-					<Anchor point="BOTTOM" relativeTo="BuffaloConfigFrame">
-						<Offset x="-130" y="24" />
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>Buffalo:openClassConfigDialogue();</OnClick>
-				</Scripts>
-			</Button>
-			--><!-- General config button --><!--
-			<Button name="$parentGeneralConfigButton" inherits="UIPanelButtonTemplate" movable="true" text="General options">
-				<Size>
-					<AbsDimension x="120" y="23" />
-				</Size>
-				<Anchors>
-					<Anchor point="BOTTOM" relativeTo="BuffaloConfigFrame">
-						<Offset x="0" y="24" />
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>Buffalo:openGeneralConfigDialogue();</OnClick>
-				</Scripts>
-			</Button>-->
 			
+			<!-- Raid buff rows are inserted here -->
+			<Frame name="SpasConfigSpellFrame">
+				<Size x="600" y="100" />
+				<Anchors>
+					<Anchor point="TOP" relativeTo="SpasConfigButtonFrame">
+						<Offset x="0" y="-64" />
+					</Anchor>
+				</Anchors>
+			</Frame>
+
+			<Frame name="SpasConfigUIFrame">
+				<Size x="600" y="100" />
+				<Anchors>
+					<Anchor point="TOP" relativeTo="SpasConfigButtonFrame">
+						<Offset x="0" y="-64" />
+					</Anchor>
+				</Anchors>
+
+				<!-- button size -->
+				<Frames>				
+					<Slider name="SpasUIConfigIconSize" minValue="16" maxValue="48" defaultValue="32" valueStep="1" inherits="SpasOptionsSliderTemplate" enableMouse="true" hidden="false">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="190" y="-70" relativeTo="SpasConfigUIFrame"/>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								_G[self:GetName().."Low"]:SetText("16x16");
+								_G[self:GetName().."High"]:SetText("48x48");
+							</OnLoad>
+							<OnValueChanged>
+								Spas_OnUIConfigIconSizeChanged(self);
+							</OnValueChanged>
+						</Scripts>
+					</Slider>
+					
+					<!-- button padding -->
+					<Slider name="SpasUIConfigIconPadding" minValue="0" maxValue="8" defaultValue="2" valueStep="1" inherits="SpasOptionsSliderTemplate" enableMouse="true" hidden="false">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="190" y="-130" relativeTo="SpasConfigUIFrame"/>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								_G[self:GetName().."Low"]:SetText("0 pixels");
+								_G[self:GetName().."High"]:SetText("8 pixels");
+							</OnLoad>
+							<OnValueChanged>
+								Spas_OnUIConfigIconPaddingChanged(self);
+							</OnValueChanged>
+						</Scripts>
+					</Slider>
+					
+					<!-- buttons per column (this baby needs some UI love. it WORKS but looks terrible!!!) -->
+					<!--
+					<Slider name="SpasUIConfigIconsPerRow" minValue="1" maxValue="8" defaultValue="8" valueStep="1" inherits="SpasOptionsSliderTemplate" enableMouse="true" hidden="false">
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-120" relativeTo="SpasConfigUIFrame"/>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								_G[self:GetName().."Low"]:SetText("1 (horizontal bar)");
+								_G[self:GetName().."High"]:SetText("8 (vertical bar)");
+							</OnLoad>
+							<OnValueChanged>
+								Spas_OnUIConfigIconsPerRowChanged(self);
+							</OnValueChanged>
+						</Scripts>
+					</Slider>
+					-->
+				</Frames>
+
+				<Layers>
+					<Layer>
+						<FontString name="SpasUIConfigIconSizeText" inherits="GameFontNormal" text="Spell Icon Size">
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="SpasUIConfigIconSize">
+									<Offset>
+										<AbsDimension x="-140" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<Color r="1.0" g="1.0" b="1.0" a="1.0"/>
+						</FontString>
+						<FontString name="SpasUIConfigIconSizeCaption" inherits="GameFontNormal" text="? x ?">
+							<Anchors>
+								<Anchor point="CENTER" relativeTo="SpasUIConfigIconSize">
+									<Offset>
+										<AbsDimension x="0" y="20"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+
+						<FontString name="SpasUIConfigIconPaddingText" inherits="GameFontNormal" text="Spell Icon Padding">
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="SpasUIConfigIconPadding">
+									<Offset>
+										<AbsDimension x="-140" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<Color r="1.0" g="1.0" b="1.0" a="1.0"/>
+						</FontString>
+						<FontString name="SpasUIConfigIconPaddingCaption" inherits="GameFontNormal" text="? pixels">
+							<Anchors>
+								<Anchor point="CENTER" relativeTo="SpasUIConfigIconPadding">
+									<Offset>
+										<AbsDimension x="0" y="20"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+
+				<!-- Polling speed? -->
+			</Frame>
+
 			<!-- Close button -->
-			<Button name="$parentCloseButton" inherits="UIPanelButtonTemplate" movable="true" text="Close">
+			<Button name="$parentCloseButton" inherits="UIPanelButtonTemplate" text="Close">
 				<Size>
 					<AbsDimension x="120" y="23" />
 				</Size>
 				<Anchors>
-					<Anchor point="BOTTOM" relativeTo="SpasConfigFrame">
+					<Anchor point="BOTTOM" relativeTo="SpasConfig">
 						<Offset x="0" y="32" />
 					</Anchor>
 				</Anchors>
@@ -252,6 +361,30 @@
 		</Frames>
 
 		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="SpasSpellButtonString" inherits="GameFontNormal" text="Spell Setup">
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="-50" y="-75"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<Color r="1.0" g="1.0" b="1.0" a="1.0"/>
+				</FontString>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="SpasUIButtonString" inherits="GameFontNormal" text="UI Config">
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="50" y="-75"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<Color r="1.0" g="1.0" b="1.0" a="1.0"/>
+				</FontString>
+			</Layer>
 			<Layer level="ARTWORK">
 				<FontString name="SpasVersionString" inherits="GameFontNormal" text="Spell Assignments / SPAS x - by y">
 					<Anchors>

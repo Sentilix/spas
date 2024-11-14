@@ -153,6 +153,16 @@ function Spas_OnAfterSpellClick(self, ...)
 	spellInfo.WhisperTimestamp = nil;
 end;
 
+function Spas:OnSpellConfigClick()
+	Spas.config.Mode = 1;
+	Spas:RefreshConfigurationScreen();
+end;
+
+function Spas:OnUIConfigClick()
+	Spas.config.Mode = 2;
+	Spas:RefreshConfigurationScreen();
+end;
+
 function Spas:OnChatMsgAddon(event, ...)
 	local prefix, msg, channel, sender = ...;
 
@@ -204,7 +214,7 @@ function Spas_OnLoad()
 
 	_G["SpasVersionString"]:SetText(string.format("Spell Assignments / SPAS %s - by %s", Spas.lib.addonVersion, Spas.lib.addonAuthor));
 
-	SpasConfigFrameCaption:SetText(string.format("Spell Assignments Configuration - %s", Spas.vars.playerClass));
+	SpasConfigCaption:SetText(string.format("Spell Assignments Configuration - %s", Spas.vars.playerClass));
 
     SpasEventFrame:RegisterEvent("ADDON_LOADED");
     SpasEventFrame:RegisterEvent("CHAT_MSG_ADDON");
@@ -219,7 +229,7 @@ function Spas_OnLoad()
 		["PRIEST"] = Spas.ui.backdrops.PriestFrame,
 		["SHAMAN"] = Spas.ui.backdrops.ShamanFrame,
 	};
-	SpasConfigFrame:SetBackdrop(backdrops[Spas.vars.playerClass]);
+	SpasConfig:SetBackdrop(backdrops[Spas.vars.playerClass]);
 	SpasButtonFrame:SetBackdrop(Spas.ui.backdrops.ButtonFrame);
 
 	C_ChatInfo.RegisterAddonMessagePrefix(Spas.lib.addonPrefix);
