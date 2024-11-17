@@ -1,4 +1,9 @@
 
+SpellAssignments (SPAS) v0.3.0
+* Removed dependency for Buffalo addon (!!)
+* Bumped client to 1.15.5
+
+
 SpellAssignments (SPAS) v0.2.1
 * Fixed a bug which displayed Spas for classes not eligible.
 

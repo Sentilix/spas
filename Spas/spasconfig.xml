@@ -407,20 +407,16 @@
 				tinsert(UISpecialFrames, self:GetName());
 			</OnLoad>
 			<OnShow>
-				PlaySound(Buffalo.sounds.IG_MAINMENU_OPEN);
+				PlaySound(Spas.sounds.IG_MAINMENU_OPEN);
 			</OnShow>
 			<OnHide>
-				PlaySound(Buffalo.sounds.IG_MAINMENU_CLOSE);
+				PlaySound(Spas.sounds.IG_MAINMENU_CLOSE);
 			</OnHide>
 			<OnDragStart>
-				if not BUFFALO_SubConfigOpen then
 				self:StartMoving()
-				end;
 			</OnDragStart>
 			<OnDragStop>
-				if not BUFFALO_SubConfigOpen then
 				self:StopMovingOrSizing()
-				end;
 			</OnDragStop>
 		</Scripts>
 	</Frame>

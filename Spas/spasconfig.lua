@@ -45,6 +45,10 @@ Spas.vars.playerFullName = "";
 Spas.config = {};
 Spas.config.Mode = 1;		--	1: Spells, 2: UI
 
+Spas.sounds = {};
+Spas.sounds.IG_MAINMENU_OPEN	= 850;
+Spas.sounds.IG_MAINMENU_CLOSE	= 851;
+
 Spas.ui = {};
 Spas.ui.ConfigButtonAlphaOff = 0.7;
 Spas.ui.ConfigButtonAlphaOn = 1.0;
@@ -304,8 +308,6 @@ function Spas:OnUIConfigIconsPerRowChanged(object)
 		Spas.options.spellFrame.IconsPerRow = value;
 		Spas:RefreshSpellButtons();
 	end;
-	
---	BuffaloSliderPrayerThresholdText:SetText(string.format("%s/5 people", Buffalo.config.value.GroupBuffThreshold));
 end;
 
 
