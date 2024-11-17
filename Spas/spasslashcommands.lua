@@ -30,7 +30,7 @@ end
 
 SLASH_SPAS_VISIBILITY1 = "/spasvisibility"
 SlashCmdList["SPAS_VISIBILITY"] = function(params)
-	if not Spas.vars.addonLoaded then
+	if not Spas.vars.AddonLoaded then
 		--	We get some funny errors if reading options before addon is ready.
 		return;
 	end;

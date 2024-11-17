@@ -54,7 +54,7 @@ Spas.timers["Blink"] = {
 function Spas:OnTimer(elapsed)
 	Spas.vars.timerTick = Spas.vars.timerTick + elapsed;
 
-	if not Spas.vars.addonLoaded then
+	if not Spas.vars.AddonLoaded then
 		return;
 	end;
 

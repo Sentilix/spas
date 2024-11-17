@@ -1,6 +1,6 @@
 ## Title: Spell Assignments - spas
 ## Notes: Assign commonly-used spells to specific players
-## Version: 0.2.0
+## Version: 0.2.1
 ## Author: Mimma @ <EU-Pyrewood Village>
 ## Interface: 11504
 ## SavedVariables: SPAS_PERSISTED_OPTIONS

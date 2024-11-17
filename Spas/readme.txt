@@ -1,4 +1,8 @@
 
+SpellAssignments (SPAS) v0.2.1
+* Fixed a bug which displayed Spas for classes not eligible.
+
+
 SpellAssignments (SPAS) v0.2.0
 * Added configuration of the UI.
 

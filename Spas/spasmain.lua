@@ -20,13 +20,12 @@ function Spas:Initialize()
 		Spas:UpdateAddonVisibility();
 	else
 		Spas:LoadSettings();
-
 		SpasButtonFrame:Hide();
 	end;
 
 	Spas:InitalizeConfigurationOptions();
 
-	Spas.vars.addonLoaded = true;
+	Spas.vars.AddonLoaded = true;
 
 	Spas:SaveSettings();
 end;
@@ -108,11 +107,14 @@ function Spas_RepositionateButtonFrame(object)
 end;
 
 function Spas:UpdateAddonVisibility()
+	if not Spas.vars.UnsupportedClass then
+		return;
+	end;
+	
 	local visibility = Spas.ui.visibility[Spas.options.AddonVisibility or "ALWAYS"];
-
 	local inInstance, instanceType = IsInInstance();
-
 	local current = SPAS_VISIBILITY_SOLO;
+
 	if instanceType == "pvp" then
 		current = SPAS_VISIBILITY_PVP
 	elseif IsInRaid() then

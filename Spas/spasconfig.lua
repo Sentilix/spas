@@ -11,7 +11,8 @@ Spas = select(2, ...)
 --	General variables:
 Spas.vars = {};
 Spas.vars.BootTime = GetTime();
-Spas.vars.addonLoaded = false;
+Spas.vars.AddonLoaded = false;
+Spas.vars.UnsupportedClass = false;
 Spas.vars.maxSelectableSpells = 8;		--	This defines how many frames (buttons) we will pre-define.
 Spas.vars.sortedSpells = {};			--	Learned spells (hidden or shown) for this character.
 --	spellInfo.SpellName			Name of spell
@@ -466,6 +467,7 @@ function Spas:LoadSpellTable()
 	if not spells then
 		--	This class does not support any of the configured spells.
 		--	Hide addon is probably all we can do.
+		Spas.vars.UnsupportedClass = true;
 		SpasButtonFrame:Hide();
 		return false;
 	end;
