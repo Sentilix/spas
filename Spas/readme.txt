@@ -1,4 +1,9 @@
 
+SpellAssignments (SPAS) v0.3.1
+* Fixed LUA error in config.
+* Bumped client to 1.15.6
+
+
 SpellAssignments (SPAS) v0.3.0
 * Removed dependency for Buffalo addon (!!)
 * Bumped client to 1.15.5

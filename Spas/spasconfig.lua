@@ -322,7 +322,7 @@ function Spas:RefreshSpellButtons(debugDisplaySettings)
 	local posX = 0;
 	local posY = 0;
 
-	if not Spas.options then return; end;
+	if not Spas.options or not Spas.options.spellFrame then return; end;
 
 	--	spellFrame is nil while initializing
 	if Spas.options.spellFrame then
