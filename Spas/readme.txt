@@ -1,4 +1,8 @@
 
+SpellAssignments (SPAS) v0.3.2
+* Bumped client to 1.15.7
+
+
 SpellAssignments (SPAS) v0.3.1
 * Fixed LUA error in config.
 * Bumped client to 1.15.6
